@@ -143,7 +143,7 @@ class Cromossomo:
             total_distance += min_distancia
         self.aptidao = 1 / (1 + total_distance) / (len(self) ** .5)
 
-    def plot_centroides(self, pontos_problema: list[tuple[float, ...]]):
+    def clusterizar(self, pontos_problema: list[tuple[float, ...]]) -> list[list[tuple[float, ...]]]:
         pontos_cluster = [[] for _ in range(len(self))]
 
         for point in pontos_problema:
@@ -156,7 +156,10 @@ class Cromossomo:
                     min_distancia = distance
                     min_centroide = i
             pontos_cluster[min_centroide].append(point)
+        return pontos_cluster
 
+    def plot_centroides(self, pontos_problema: list[tuple[float, ...]], save_path: str = None):
+        pontos_cluster = self.clusterizar(pontos_problema)
         colors = plt.cm.tab10.colors
 
         for i, (centroide, pontos) in enumerate(zip(self, pontos_cluster)):
@@ -166,14 +169,9 @@ class Cromossomo:
                     *zip(*pontos), label=f'Cluster {i}', color=color
                 )
         plt.legend()
-        plt.show()
 
-
-if __name__ == "__main__":
-    points = [
-        (1.0, 2.0), (3.0, 2.0), (1.0, 3.0),
-        (5.0, 6.0), (4.0, 6.0), (7.0, 5.0),
-        (13.0, 14.0), (14.0, 14.0), (14.0, 13.0)
-    ]
-    cromossomo = Cromossomo(points, min_k=3, max_k=6)
-    cromossomo.plot_centroides(points)
+        if save_path:
+            plt.savefig(f"images/{save_path}")
+            plt.clf()
+        else:
+            plt.show()
