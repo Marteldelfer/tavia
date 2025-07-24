@@ -30,10 +30,10 @@ def genetico(n_geracoes: int, pontos_problema: list[tuple[float, ...]], tamanho_
 
 if __name__ == "__main__":
 
-    """ X, _ = make_blobs(
+    X, _ = make_blobs(
         n_samples=200, centers=4, cluster_std=1
     )
-    genetico(75, X, 80, 2, 20).plot_centroides(X) """
+    genetico(75, X, 80, 2, 20).plot_centroides(X)
 
     X, _ = load_iris(return_X_y=True)
     melhor = genetico(75, X, 80, 2, 20)
